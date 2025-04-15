@@ -1,0 +1,112 @@
+For the Controller class:
+
+there are 3 class variables: 
+    - __data: set equal to the value of the GameData() function, which contains the curent state of the game
+    - __display: set equal to the value of the BoardDisplay() function, which contains the code for handling the display
+    - __numCycles: set equal to 0, or the number of frames that have passed since the game started
+
+The class also contains the following methods:
+
+startNewGame, no function arguments:
+    -initialies the game by placing the snake with the placeSnakeAtStartLocation() function, contained in the __data object.
+
+gameOver, no funciton args:
+    - calls the setGameOver() function, indicates game is over
+
+run, no functions args:
+    -contains the main loop of the game
+    -tracks the in game time
+    -calls the cycle function to continue playing the game, provided getGameOver() returns False
+
+cycle, no function args:
+    -updates all game variables, i.e checking what keys are pressed, making sure snake posision is updated, foodis updated, as well as updating the games graphics
+
+checkKeyPress, no function args:
+    -checks if the ENUMS set as the keypresses are ebeing activated, and calls their corresponding functionality
+
+updateSnake, no function args:
+    -calculates if the number of cycles (updated above) is divisible by REFRESH_RATE, the tickrate of the game. if it is, then check the direction and go to that cell. 
+    -then attempt to advance the snake to that cell, otherwise print an exception.
+
+advanceSnake, no functions args:
+    -checks if the snake has hit itself or a wall, ending the game
+    -otherwise, if the next cell is food, eat it.
+
+
+getFirstCellInPath
+	-grabs first cell that is a food cell
+
+reverseSnake
+	-presumably turns the snake around, hasn't been implemented yet
+
+getNextCellFromBFS
+    -presumably to generate a BFS path for the snake to follow, likely for the AI mode
+
+Keypress
+    -enum to define keypresses and what they do
+
+
+GameData Class
+
+    a few class variables, namely
+        height/width, which give the dimensions of the game world
+        total cells and free cells, tracking how many empty/taken cells there are on the baord
+        foodCells and snakecells, arrays tracking where the food and snake cells are, respectively
+        and a few others that define direction, gamestate, etc.
+
+    gameData has an initialization method that takes the boardSize parameters, and creates height * width number of cells, with height rows and width collumns
+
+methods:
+
+placeSnakeAtStartLocation
+    -places snake at start, in my code, head is at 1,2 and its one body cell is 1, 1
+    sets the current mode as going east, and updates free cells
+
+inAiMode
+    checks if game is in AI mode
+
+getCell:
+    returns the cell at row, col
+
+noFood
+    checks if food is on the board
+
+addFood
+    gets a row and col using rand bewteen (1, row-1 or col-1), checks if the cell is empty (no food there, no snake body, etc.) change the cell into food
+    otherwise, checks if the number of free cells / totalCells is less than 30%, if true, recursively calls to add more food
+    
+some helper methods
+setHead
+    takes a cell input, and makes it head, while changing the current head into a body, inserting new head into __snakeCells
+
+deleteTail()
+    changes tail cell to empty after popping last cell from __snakeCells
+
+a bunch of get Neighbor cell functions
+    self explanitory, get___Neighbor returns ___ (N-S-E-W) neighbor
+
+getNextCellInDir
+    -calls the previous getneighbor functions, but based off the current direction the snake is going in (variable defined above)
+
+    a bunch of get Neighbor cell functions
+        self explanitory, get___Neighbor returns ___ (N-S-E-W) neighbor
+
+getNeighbors
+    returns neighbors of the given cell
+
+getRandomNeighbors
+    calls getNeigbors, then randomly selects one of the cells in the list returned
+
+setter functions
+    sets the snake direction to N S E W
+
+BoardCell
+    few init variables,
+    row, col - cell row and col
+    cellType - type of cell
+    addedToSearchQueue & parent - for BFS implmentation further down the line
+
+    getters/setters - getters for row, col, checks on what type of cell it is
+    setters for making it a head, body, food, etc. as well as adding it to a search list for the BFS implementation
+
+
